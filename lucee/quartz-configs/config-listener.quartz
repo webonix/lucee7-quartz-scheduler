@@ -1,0 +1,8 @@
+{
+  "listeners": [
+    {
+      "stream": "out",
+      "component": "org.lucee.extension.quartz.ConsoleListener"
+    }
+  ]
+}

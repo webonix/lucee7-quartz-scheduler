@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpine.js + Bulma + WebSocket + REST</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+</head>
+<body>
+    <section class="section" x-data="appData">
+        <div class="container">
+            <h1 class="title">WebSocket & REST API Example</h1>
+            
+            <button class="button is-primary" @click="fetchData">Fetch Data</button>
+            <button class="button is-danger" @click="sendMessage">Send WebSocket Message</button>
+            
+            <div class="box" x-text="message"></div>
+            <div class="notification is-info" x-text="apiResponse"></div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appData', () => ({
+                message: 'WebSocket message will appear here',
+                apiResponse: 'API response will appear here',
+                ws: null,
+                
+                init() {
+                    this.ws = new WebSocket('wss://your-websocket-server.com');
+                    
+                    this.ws.onmessage = (event) => {
+                        this.message = event.data;
+                    };
+                },
+                
+                sendMessage() {
+                    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                        this.ws.send('Hello from Alpine.js!');
+                    } else {
+                        this.message = 'WebSocket is not connected';
+                    }
+                },
+                
+                async fetchData() {
+                    try {
+                        let response = await fetch('https://your-rest-api.com/endpoint');
+                        let data = await response.json();
+                        this.apiResponse = JSON.stringify(data, null, 2);
+                    } catch (error) {
+                        this.apiResponse = 'Error fetching data';
+                    }
+                }
+            }));
+        });
+    </script>
+</body>
+</html>

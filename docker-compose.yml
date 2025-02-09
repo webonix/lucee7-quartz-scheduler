@@ -1,0 +1,57 @@
+services:
+  lucee-master:
+    build: ./lucee
+    container_name: lucee-web
+    ports:
+      - "8888:8888"  # Master Lucee is accessible on port 8888 # http://127.0.0.1:8888
+    networks:
+      - lucee-network
+    volumes: 
+      - ./lucee/www:/var/www # Shared codebase
+      - ./lucee/lucee-server:/opt/lucee/server/lucee-server/
+      - ./lucee/lucee-web:/lucee/web/
+    environment:
+      - LUCEE_ADMIN_PASSWORD=password
+      - LUCEE_PURPOSE=master
+    restart: unless-stopped
+
+  lucee-worker:
+    build: ./lucee
+    deploy:
+      replicas: 0  # ./docker.sh scale 5 | docker-compose up -d --scale lucee-worker=5
+    expose:
+      - "8889"  # Internal communication only (no direct browser access)
+    networks:
+      - lucee-network
+    volumes:
+      - ./lucee/www:/var/www  # Shared codebase
+    environment:
+      - LUCEE_ADMIN_PASSWORD=password
+      - LUCEE_PURPOSE=worker
+    restart: unless-stopped
+
+  redis:
+    build: ./redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - lucee-network
+    volumes:
+      - ./redis/data:/data
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    platform: linux/amd64
+    environment:
+    - REDIS_HOSTS=127.0.0.1:redis:6379
+    networks:
+      - lucee-network
+    ports:
+      - "8081:8081" # http://127.0.0.1:8081
+    restart: unless-stopped
+
+networks:
+  lucee-network:
+    driver: bridge

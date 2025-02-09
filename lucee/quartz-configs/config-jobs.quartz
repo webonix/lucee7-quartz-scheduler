@@ -1,0 +1,17 @@
+{
+  "jobs": [
+    {
+      "label": "Example for every 60 seconds",
+      "url": "http://localhost:8888/jobs/dummy.cfm",
+      "interval": "60",
+      "endAt": "April, 22 2028 00:00:00 +0000",
+      "pause": false
+    },
+    {
+      "label": "Every 5 seconds, every minute, every hour between 09am and 17pm, of every day",
+      "url": "http://localhost:8888/jobs/dummy.cfm?id=1",
+      "cron": "0/5 * 9-17 * * ?",
+      "pause": false
+    }
+  ]
+}
