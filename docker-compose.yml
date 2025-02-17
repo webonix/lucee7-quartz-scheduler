@@ -1,6 +1,10 @@
 services:
   lucee-master:
-    build: ./lucee
+    build: 
+      context: ./lucee
+      args:
+        LUCEE_VERSION: "6.2.1.25-SNAPSHOT-light" # Pass the version explicitly
+        LUCEE_ADMIN_PASSWORD: "password"
     container_name: lucee-web
     ports:
       - "8888:8888"  # Master Lucee is accessible on port 8888 # http://127.0.0.1:8888
@@ -8,15 +12,20 @@ services:
       - lucee-network
     volumes: 
       - ./lucee/www:/var/www # Shared codebase
-      - ./lucee/lucee-server:/opt/lucee/server/lucee-server/
-      - ./lucee/lucee-web:/lucee/web/
+    #  - ./lucee/lucee-server:/opt/lucee/server/lucee-server/
+    #  - ./lucee/lucee-web:/lucee/web/
+      - ./lucee/lucee-server/logs:/opt/lucee/server/lucee-server/context/logs/
     environment:
+      - LUCEE_PURPOSE=web
       - LUCEE_ADMIN_PASSWORD=password
-      - LUCEE_PURPOSE=master
     restart: unless-stopped
 
   lucee-worker:
-    build: ./lucee
+    build: 
+      context: ./lucee
+      args:
+        LUCEE_VERSION: "6.2.1.25-SNAPSHOT-light" # Pass the version explicitly
+        LUCEE_ADMIN_PASSWORD: "password"
     deploy:
       replicas: 0  # ./docker.sh scale 5 | docker-compose up -d --scale lucee-worker=5
     expose:
@@ -26,9 +35,11 @@ services:
     volumes:
       - ./lucee/www:/var/www  # Shared codebase
     environment:
-      - LUCEE_ADMIN_PASSWORD=password
       - LUCEE_PURPOSE=worker
+      - LUCEE_ADMIN_PASSWORD=password
+    
     restart: unless-stopped
+
 
   redis:
     build: ./redis
@@ -40,17 +51,27 @@ services:
     volumes:
       - ./redis/data:/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   redis-commander:
     image: rediscommander/redis-commander:latest
     platform: linux/amd64
     environment:
-    - REDIS_HOSTS=127.0.0.1:redis:6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=strongpassword
     networks:
       - lucee-network
     ports:
       - "8081:8081" # http://127.0.0.1:8081
     restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
 
 networks:
   lucee-network:

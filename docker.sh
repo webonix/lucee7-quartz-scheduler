@@ -69,6 +69,7 @@ case "$COMMAND" in
 
     up)
         docker compose up -d 
+        
 
         open_in_chrome "http://127.0.0.1:8888/index.cfm"
         ;;
@@ -99,12 +100,16 @@ case "$COMMAND" in
         docker system prune --all --volumes --force
         ;;
 
+    deploy-extensions)
+        # temp fix until I can work out how to deply in Dockerfile
+        cp ./lucee/extensions/lucee.admin.extension-1.0.0.5.lex                          ./lucee/lucee-server/deploy/
+        cp ./lucee/extensions/org.lucee.quartz.extension-1.0.0.27.lex ./lucee/lucee-server/deploy/
+        cp ./lucee/extensions/redis.extension-3.0.0.48.lex            ./lucee/lucee-server/deploy/
+
+        ;;
+
     *)
-        echo "Usage: $0 {build|up|down|restart|scale 3|log}"
+        echo "Usage: $0 [ build | up | down | restart | scale 3 | log | docker-clean-up | deploy-extensions ]"
         exit 1
         ;;
 esac
-
-
-
-
