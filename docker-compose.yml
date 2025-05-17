@@ -1,39 +1,48 @@
 services:
-  lucee-master:
+  lucee-web:
     build: 
       context: ./lucee
       args:
-        LUCEE_VERSION: "6.2.1.25-SNAPSHOT-light" # Pass the version explicitly
+        LUCEE_VERSION: "7.0.0.240-SNAPSHOT" # Pass the version explicitly 
         LUCEE_ADMIN_PASSWORD: "password"
     container_name: lucee-web
+    depends_on:
+      redis:
+        condition: service_healthy
     ports:
       - "8888:8888"  # Master Lucee is accessible on port 8888 # http://127.0.0.1:8888
     networks:
-      - lucee-network
+      - demo-network
     volumes: 
       - ./lucee/www:/var/www # Shared codebase
+      - ./lucee/components:/var/components # Shared components
     #  - ./lucee/lucee-server:/opt/lucee/server/lucee-server/
     #  - ./lucee/lucee-web:/lucee/web/
       - ./lucee/lucee-server/logs:/opt/lucee/server/lucee-server/context/logs/
     environment:
       - LUCEE_PURPOSE=web
       - LUCEE_ADMIN_PASSWORD=password
+      - MACINE_NAME="lucee-web"
     restart: unless-stopped
 
   lucee-worker:
     build: 
       context: ./lucee
       args:
-        LUCEE_VERSION: "6.2.1.25-SNAPSHOT-light" # Pass the version explicitly
+        LUCEE_VERSION: "7.0.0.240-SNAPSHOT" # Pass the version explicitly
         LUCEE_ADMIN_PASSWORD: "password"
     deploy:
       replicas: 0  # ./docker.sh scale 5 | docker-compose up -d --scale lucee-worker=5
+    depends_on:
+      redis:
+        condition: service_healthy
     expose:
       - "8889"  # Internal communication only (no direct browser access)
     networks:
-      - lucee-network
+      - demo-network
     volumes:
       - ./lucee/www:/var/www  # Shared codebase
+      - ./lucee/components:/var/components # Shared components
     environment:
       - LUCEE_PURPOSE=worker
       - LUCEE_ADMIN_PASSWORD=password
@@ -42,14 +51,17 @@ services:
 
 
   redis:
-    build: ./redis
+    build: 
+      context: ./redis
     container_name: redis
     ports:
       - "6379:6379"
     networks:
-      - lucee-network
+      - demo-network
     volumes:
-      - ./redis/data:/data
+      - redis_data:/data
+    #profiles:
+    #  - redis
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -59,20 +71,68 @@ services:
 
   redis-commander:
     image: rediscommander/redis-commander:latest
-    platform: linux/amd64
+    platform: linux/amd64 # Mac Silicon
+    container_name: redis-commander
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=strongpassword
     networks:
-      - lucee-network
+      - demo-network
     ports:
       - "8081:8081" # http://127.0.0.1:8081
     restart: unless-stopped
+    profiles:
+      - redisCommander
     depends_on:
       redis:
         condition: service_healthy
+  
+  mysql:
+    image: mysql:8.0
+    platform: linux/amd64 # Mac Silicon
+    restart: always
+    #profiles:
+    #  - mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: strongpassword
+      MYSQL_DATABASE: quartz  # Automatically creates the 'quartz' tables on first run
+    container_name: mysql
+    networks:
+      - demo-network
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d # SQL to create DB and qs user
+    command: --authentication_policy=caching_sha2_password
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -p${MYSQL_ROOT_PASSWORD} --silent || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64 # Mac Silicon
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: strongpassword
+    networks:
+      - demo-network
+    ports:
+      - "3380:80"
+    depends_on:
+      - mysql
+    #profiles:
+    #  - mysql
+
+volumes:
+  mysql_data:
+  redis_data:
 
 networks:
-  lucee-network:
+  demo-network:
     driver: bridge

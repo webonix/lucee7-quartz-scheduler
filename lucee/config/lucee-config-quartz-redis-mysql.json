@@ -48,6 +48,10 @@
     {
       "inspectTemplate": "never",
       "physical": "{lucee-config}/components/"
+    },
+    {
+      "physical": "/var/components/",
+      "virtual": "quartz"
     }
   ],
   "customTagMappings": [
@@ -57,7 +61,36 @@
     }
   ],
   "dataSources": {
-    "preserveSingleQuote": "yes"
+    "preserveSingleQuote": "yes",
+    "quartz": {
+      "class": "com.mysql.cj.jdbc.Driver",
+      "dsn": "jdbc:mysql://{host}:{port}/{database}",
+      "id": "mysql",
+      "username": "qs",
+      "password": "encrypted:d36b1f47b01ee0cfd5a8033ccd82b370a7c8e156a68119934df22833be3ab0ca3f34e1fbea38be02",
+      "host": "mysql",
+      "database": "quartz",
+      "port": "3306",
+      "connectionLimit": "-1",
+      "connectionTimeout": "1",
+      "liveTimeout": "15",
+      "metaCacheTimeout": "60000",
+      "blob": "false",
+      "clob": "false",
+      "validate": "false",
+      "storage": "false",
+      "allow": "511",
+      "custom": {
+        "characterEncoding": "UTF-8",
+        "serverTimezone": "Etc/UTC",
+        "maxReconnects": "3"
+      },
+      "dbdriver": "MySQL",
+      "paramDelimiter": "&",
+      "paramLeadingDelimiter": "?",
+      "paramSeparator": "=",
+      "alwaysSetTimeout": "true"
+    }
   },
   "debugging": {
     "logMemoryUsage": "no",
@@ -169,6 +202,15 @@
       "level": "trace",
       "layout": "classic"
     },
+    "quartz-scheduler": {
+      "appender": "resource",
+      "appenderArguments": {
+        "path": "{lucee-config}/logs/quartz-scheduler.log"
+      },
+      "level": "trace",
+      "layout": "classic"
+    },
+    
     "search": {
       "appender": "resource",
       "appenderArguments": {
@@ -315,23 +357,8 @@
       "arguments": "case-sensitive:true;lock-timeout:1000;"
     }
   ],
-  "salt": "BEC69F33-6ECC-4846-B7F38D21B813AF6C",
+  "salt": "28B3584E-2A0E-4320-81533B001402F941",
   "extensions": [
-    {
-      "id": "60772C12-F179-D555-8E2CD2B4F7428718",
-      "name": "Redis driver",
-      "version": "3.0.0.48"
-    },
-    {
-      "id": "E99E43A5-C10E-41E9-878BFC82BAAD99CE",
-      "name": "Quartz Scheduler",
-      "version": "1.0.0.27"
-    },
-    {
-      "id": "CED6227E-0F49-6367-A68D21AACA6B07E8",
-      "name": "Lucee Administrator",
-      "version": "1.0.0.5"
-    }
   ],
   "cacheClasses": [
     {
@@ -341,45 +368,6 @@
     }
   ],
   "gateways": {
-    "quartz-task": {
-      "cfcPath": "org.lucee.extension.quartz.QuartzGateway",
-      "listenerCFCPath": "",
-      "startupMode": "automatic",
-      "custom": {
-        "configFile": "{lucee-config}/quartz/config.json",
-        "logName": "scheduler"
-      },
-      "readOnly": "false"
-    }
   },
-  "hspw": "d18f4db5d29849b2369df0bebb0f291ddcaabd40f516ba83f62cd59a513676ba",
-  "cache": {
-
-  },
-  "caches": {
-    "quartz": {
-      "class": "lucee.extension.io.cache.redis.simple.RedisCache",
-      "custom": {
-        "secretKey": "",
-        "minIdle": "0",
-        "maxTotal": "24",
-        "secretName": "",
-        "maxIdle": "8",
-        "maxLowPriority": "0",
-        "host": "localhost",
-        "accessKeyId": "",
-        "idleTimeout": "300000",
-        "password": "",
-        "liveTimeout": "3600000",
-        "region": "",
-        "port": "6379",
-        "timeToLiveSeconds": 0,
-        "socketTimeout": "2000",
-        "username": "",
-        "connectionTimeout": "5000"
-      },
-      "readOnly": "false",
-      "storage": "false"
-    }
-  }
+  "hspw": "7f7c5dba8bf480038494078095429763e9efacc1918132c2f11396155dd42acf"
 }

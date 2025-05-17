@@ -1,0 +1,44 @@
+{
+  "jobs": [
+    {
+      "label": "put a load on the cpu every 5 seconds",
+      "component": "quartz.cpuLoad",
+      "interval": 5,
+      "pause": false,
+      "duration": 5,
+      "schedule": "interval",
+      "load": 20
+    },
+    {
+      "label": "every 13 seconds",
+      "component": "quartz.checkPurpose",
+      "cron": "0/13 * * * * ?",
+      "pause": false,
+      "schedule": "cron"
+    },
+    {
+      "label": "every 15 seconds every day",
+      "url": "/cron/systemoutput.cfm",
+      "cron": "0/15 * * ? * *",
+      "pause": false,
+      "schedule": "cron"
+    }
+  ],
+  "listeners": [
+    {
+      "component": "quartz.systemoutputListener",
+      "stream": "err",
+      "logFile": "{lucee-config}/logs/quartz-cluster.log"
+    }
+  ],
+  "store": {
+    "type": "datasource",
+    "datasource": "quartz",
+    "tablePrefix": "QRTZ_",
+    "cluster": true,
+    "clusterCheckinInterval": "15000",
+    "misfireThreshold": "60000",
+    "acquireTriggersWithinLock": "true",
+    "lockHandler.class": "org.quartz.impl.jdbcjobstore.UpdateLockRowSemaphore"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "jobs": [
+    {
+      "label": "every 15 seconds every day",
+      "url": "/cron/systemoutput.cfm",
+      "cron": "0/15 * * ? * *",
+      "pause": false
+    }
+  ],
+  "listeners": [
+{
+      "component": "quartz.systemoutputListener"
+    }
+  ],
+  "store": {
+    "type": "jdbc",
+    "datasource": "qs",
+    "tablePrefix": "QRTZ_",
+    "driver": "com.mysql.cj.jdbc.Driver",
+    "url": "jdbc:mysql://mysql:3306/quartz",
+    "username": "root",
+    "password": "strongpassword",
+    "maxConnections": 5
+    }
+}

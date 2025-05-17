@@ -48,7 +48,7 @@ EOF
 # Check the command provided by the user
 case "$COMMAND" in
     build)
-        docker compose down -v
+        docker compose down
         rm -rf ./lucee/lucee-server/
         rm -rf ./lucee/lucee-web/
 
@@ -75,7 +75,7 @@ case "$COMMAND" in
         ;;
 
     restart)
-        docker compose down -v
+        docker compose down
         docker compose up -d 
 
         open_in_chrome "http://127.0.0.1:8888/index.cfm"
@@ -86,16 +86,31 @@ case "$COMMAND" in
         ;;
 
     down)
-        docker compose down -v
+        docker compose down --remove-orphans # stop profiles too
+        
         rm -rf ./lucee/lucee-server/
         rm -rf ./lucee/lucee-web/
+        ;;
+
+    redis)
+        docker compose --profile redisCommander up -d
+        ;;
+
+    phpmyadmin)
+        docker compose --profile phpmyadmin up -d
         ;;
 
     log)
         docker compose logs -f 
         ;;
 
+    reset-data)
+        # removes docker volumes
+        docker volume rm redis-data mysql_data
+        ;;
+
     docker-clean-up)
+        docker compose down -v # removes volume
         docker builder prune --force
         docker system prune --all --volumes --force
         ;;
@@ -109,7 +124,7 @@ case "$COMMAND" in
         ;;
 
     *)
-        echo "Usage: $0 [ build | up | down | restart | scale 3 | log | docker-clean-up | deploy-extensions ]"
+        echo "Usage: $0 [ build | up | down | restart | scale 3 | log | reset-data | docker-clean-up | deploy-extensions ]"
         exit 1
         ;;
 esac

@@ -1,0 +1,110 @@
+/* theme.css */
+:root {
+    --bg: #ecfdf5;         /* Tailwind green-100 */
+    --bg-light: #d1fae5;   /* green-200 */
+    --text: #064e3b;       /* green-900 */
+    --text-light: #065f46; /* green-800 */
+    --accent: #34d399;     /* green-400 */
+    --accent-dark: #059669; /* green-600 */
+  }
+  
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: sans-serif;
+  }
+
+  main {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  
+  .sidebar {
+    background-color: var(--bg-light);
+    border-right: 1px solid var(--accent);
+    color: var(--text);
+  }
+  
+  .sidebar button {
+    display: block;
+    width: 100%;
+    padding: 0.5em 1em;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    text-align: left;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .sidebar button:hover {
+    background-color: var(--accent);
+    color: white;
+  }
+  
+  .sidebar button.active {
+    background-color: var(--accent-dark);
+    color: white;
+    font-weight: bold;
+  }
+  
+  .slide-header {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .slide-header h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text);
+  }
+  
+  .slide-header p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+  
+  .slide h2 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  
+  .slide ul {
+    font-size: 1.25rem;
+    list-style: disc;
+    margin-left: 1.5rem;
+  }
+  
+  .slide li {
+    opacity: 0.3;
+    transition: opacity 0.3s, font-weight 0.3s;
+    color: var(--text-light);
+  }
+  
+  .slide li.visible {
+    opacity: 1;
+    font-weight: bold;
+    color: var(--text);
+  }
+  
+  .bullet-upcoming {
+    opacity: 0.3;
+    color: var(--text-light);
+    transition: opacity 0.3s ease;
+  }
+  
+  .bullet-past {
+    opacity: 0.6;
+    color: var(--text-light);
+    transition: opacity 0.3s ease;
+  }
+  
+  .bullet-current {
+    opacity: 1;
+    font-weight: bold;
+    color: var(--text);
+    transition: opacity 0.3s ease;
+  }
+  

@@ -1,0 +1,74 @@
+<div style="padding: 20px;">
+
+    <h1 style="font-size: 42px;">components/org/lucee/extension/quartz/Quartz.cfc</h1>
+    
+    <pre style="font-size: 24px;">
+component extends="QuartzSupport" <strong>javaSettings</strong>='{
+    <strong>"maven"</strong>:[
+        {
+            "groupId" : "org.quartz-scheduler",
+            "artifactId" : "quartz-jobs",
+            "version" : "2.3.2"
+        },
+        {
+            "groupId" : "org.quartz-scheduler",
+            "artifactId" : "quartz",
+            "version" : "2.3.2"
+        },
+        {
+            "groupId" : "com.mchange",
+            "artifactId" : "c3p0",
+            "version" : "0.9.5.4"
+        },
+        {
+            "groupId" : "com.zaxxer",
+            "artifactId" : "HikariCP-java7",
+            "version" : "2.4.13"
+        },
+        {
+            "groupId" : "log4j",
+            "artifactId" : "log4j",
+            "version" : "1.2.17"
+        },
+        {
+            "groupId" : "org.slf4j",
+            "artifactId" : "slf4j-api",
+            "version" : "1.7.7"
+        },
+        {
+            "groupId" : "org.slf4j",
+            "artifactId" : "slf4j-log4j12",
+            "version" : "1.7.7"
+        },
+        {
+            "groupId" : "net.joelinn",
+            "artifactId" : "quartz-redis-jobstore",
+            "version" : "1.2.0"
+        }
+    ]
+}' {
+
+    // import java packages
+    import org.quartz.*;
+    import org.quartz.impl.*;
+    import org.quartz.impl.matchers.*;
+    import org.quartz.jobs.*;
+    import java.util.*;
+
+    ...
+}
+    </pre>
+
+    <h1 style="font-size: 42px;">Deploy Log</h1>
+
+    <pre>
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz-jobs/2.3.2/_remote.repositories] provided by the extension"
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz-jobs/2.3.2/quartz-jobs-2.3.2.jar] provided by the extension"
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz-jobs/2.3.2/quartz-jobs-2.3.2.pom] provided by the extension"
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz-jobs/maven-metadata-local.xml] provided by the extension"
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz/2.3.2/_remote.repositories] provided by the extension"
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz/2.3.2/quartz-2.3.2.jar] provided by the extension"
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz/2.3.2/quartz-2.3.2.pom] provided by the extension"
+"INFO","main","05/17/2025","04:14:00","extension","created file [/opt/lucee/server/lucee-server/mvn/org/quartz-scheduler/quartz/maven-metadata-local.xml] provided by the extension"
+    </pre>
+</div>

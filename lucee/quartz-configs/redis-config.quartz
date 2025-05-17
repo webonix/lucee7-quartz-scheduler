@@ -5,10 +5,29 @@
       "url": "/cron/systemoutput.cfm",
       "cron": "0/15 * * ? * *",
       "pause": false
+    },
+    {
+        "label": "every 13 seconds",
+        "component": "quartz.checkPurpose",
+        "cron": "0/13 * * * * ?",
+        "pause": false
+    },
+    {
+      "label": "put a load on the cpu every 5 seconds",
+      "component": "quartz.cpuLoad",
+      "interval": 5,
+      "pause": false,
+      "data": {
+        "duration": 5,
+        "load": 20
+      }
     }
+
   ],
   "listeners": [
-
+    {
+      "component": "quartz.systemoutputListener"
+    }
   ],
   "store": {
     "type": "redis",

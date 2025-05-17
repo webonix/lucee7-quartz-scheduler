@@ -1,0 +1,57 @@
+<div style="padding: 20px;">
+
+    <h1 style="font-size: 42px;">Using the Deployment Mechanism</h1>
+
+    <p style="font-size: 36px;">
+        
+        Lucee provides a "deploy" folder where you can place configuration files that Lucee will automatically pick up and install.<br>
+        <br>
+        To update your Quartz Scheduler configuration:
+        <ol style="font-size: 24px;">
+            <li>Create a file named <em>config.quartz</em> with your configuration</li>
+            <li>Place it in the Lucee deploy directory <em>{lucee-server}/lucee-server/deploy/</em></li>
+            <li>Lucee will detect and process it within a minute</li>
+            <li>This mechanism updates the existing configuration rather than replacing it completely.</li>
+        </ol>
+    </p>
+
+    <p style="font-size: 24px;">
+        <pre>
+bash
+cd /opt/lucee/server/lucee-server/deploy/  
+vi config.quartz
+ls -l 
+        </pre>
+
+        <pre>
+{
+    "jobs": [
+        {
+            "label": "put a load on the cpu every 23 seconds",
+            "url": "/cron/systemoutput.cfm?test=23",
+            "interval": 19,
+            "pause": true,
+            "schedule": "interval"
+        },
+        {
+            "label": "put a load on the cpu every 5 seconds",
+            "component": "quartz.cpuLoad",
+            "interval": 5,
+            "pause": false,
+            "duration": 50,
+            "schedule": "interval",
+            "load": 80
+        }
+    ]
+}
+</pre>
+
+    </p>
+
+    <p>
+        <em>JSON errors in Application.log</em>
+    </p>
+</div>
+
+
+  

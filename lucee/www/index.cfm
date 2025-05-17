@@ -10,10 +10,13 @@
 <ul>
     <li><a href="http://127.0.0.1:8888/lucee/admin/index.cfm" target="luceeAdmin">Lucee Admin</a></li>
     <li><a href="http://127.0.0.1:8081/" target="RedisCommander">Redis Commander</a></li>
-    <li><a href="https://download.lucee.org/" target="luceeDownloads"></a></li>
+    <li><a href="https://download.lucee.org/" target="luceeDownloads">Lucee Downloads</a></li>
     <li><a href="https://bulma.io/" target="BulmaCSS">Bulma CSS</a></li>
     <li><a href="https://alpinejs.dev/" target="alpineJS">Alipne JS</a></li>
-    <li><a href="" target="_blank"></a></li>
+    <li><a href="http://127.0.0.1:3380/" target="phpmyadmin">phpmyadmin</a></li>
+    <li><a href="https://github.com/elventear/quartz-scheduler/blob/master/distribution/src/main/assembly/root/docs/dbTables/tables_mysql.sql" target="_blank">SQL to Create QS Tables</a></li>
+    <li><a href="https://github.com/lucee/lucee-docs/blob/master/docs/recipes/scheduler-quartz.md" target="_blank">Lucee QS Recipe</a></li>
+    <li><a href="slide-deck.html" target="_blank">Slide Deck</a></li>
     <li><a href="" target="_blank"></a></li>
     <li><a href="https://github.com/lucee/lucee-docs/tree/master/docs/recipes" target="_blank">https://github.com/lucee/lucee-docs/tree/master/docs/recipes</a></li>
 </ul>
@@ -31,3 +34,7 @@
     </cfscript>
 <cfdump var="#server.lucee#" expand="true" label="ajm server.lucee" abort="false">
 <cfdump var="#server.system#" expand="true" label="ajm server.system" abort="false">
+
+<cfset sysLoad = getCPUUsage(500)> <!--- number of milliseconds to monitor --->
+<cfdump var="#sysLoad#" expand="true" label="ajm sysLoad" abort="false">
+

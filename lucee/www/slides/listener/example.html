@@ -1,0 +1,109 @@
+<div style="padding: 20px;">
+
+    <h1 style="font-size: 42px;">Listener Example</h1>
+    
+    <pre style="font-size: 24px;">
+        component {
+            <strong>implementsJava="org.quartz.JobListener"</strong>
+
+            // Properties
+            property name="name"    type="string";
+            property name="stream"  type="string";
+            property name="logFile" type="string";
+
+            public String function <strong>init(struct listenerData={})</strong> { 
+                variables.name    = "systemOutputListener";
+                variables.stream  = listenerData.stream ?: "err";
+                variables.logFile = listenerData.logFile ?: "";
+               
+                // Initialize any resources
+                if (len(variables.logFile)) {
+                    // Ensure log directory exists
+                    var logDir = getDirectoryFromPath(variables.logFile);
+                    if (!directoryExists(logDir)) {
+                        directoryCreate(logDir);
+                    }
+                }
+            }
+            
+            public String function <strong>getName()</strong> {
+                return variables.name;
+            };
+
+            public String function <strong>getDescription()</strong> {
+                return "Logs all job execution details directly to the systemoutput, providing real-time feedback for monitoring and debugging purposes.";
+            }
+
+            public void function <strong>jobToBeExecuted( context )</strong> {
+                var message = "jobToBeExecuted( #getLabel(arguments.context)#, #getFireInstanceId(arguments.context)#)";
+                writeToLog(message);
+            };
+
+
+            public void function <strong>jobWasExecuted( context,  jobException)</strong> {
+                var message = '';
+        
+                if (isNull(arguments.jobException)) {
+                    message = "jobWasExecuted(#getLabel(arguments.context)#, #getFireInstanceId(arguments.context)#, #getRefireCount(arguments.context)#))";
+                    writeToLog(message);
+                } else {
+                    var erorMessage = arguments.jobException.getMessage();
+                    var regex = "\[See nested exception: [^:]+: (.*?)\]";
+                    var matches = reFind(regex, erorMessage, 1, true);
+        
+                    if (arrayLen(matches.pos) > 1) {
+                        erorMessage = mid(erorMessage, matches.pos[2], matches.len[2]);
+                    }
+                    
+                    message = "jobWasExecuted( #getLabel(arguments.context)#, #getFireInstanceId(arguments.context)#, #getRefireCount(arguments.context)# ) with exception: #erorMessage#";
+                    writeToLog(message);
+                }
+            }
+
+            public void   function <strong>jobExecutionVetoed( context )</strong>{
+                // coming soon ...
+            };
+
+
+
+            private static function <strong>getLabel(context)</strong> {
+                var job=arguments.context.getJobDetail();
+                var dataMap=job.getJobDataMap();
+        
+                return dataMap["label"]?:job.getKey().toString();
+            }
+        
+            private static function getFireInstanceId(context) {
+                return arguments.context.getFireInstanceId();
+            }
+        
+        
+            private static function getRefireCount(context) {
+                return arguments.context.getRefireCount();
+            }
+        
+            private static function getJobId(context) {
+                var job=arguments.context.getJobDetail();
+                return job.getKey().toString();
+            }
+
+            // Helper function to write to log
+            private void function writeToLog(required string message) {
+                // Write to console
+                if (variables.stream == "out") {
+                    systemOutput(message, true, true);
+                } else {
+                    systemOutput(message, true, false);
+                }
+                
+                // Write to log file if configured
+                if (len(variables.logFile)) {
+                    fileAppend(variables.logFile, message & chr(13) & chr(10));
+                }
+            }
+
+        }
+    </pre>
+    
+
+    </div>
