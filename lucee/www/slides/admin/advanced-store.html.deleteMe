@@ -8,9 +8,7 @@
       "type": "datasource",
       "datasource": "quartz",
       "tablePrefix": "QRTZ_",
-
-      <strong>"cluster": true,</strong>
-
+      "cluster": true,
       "clusterCheckinInterval": "15000",
       "misfireThreshold": "60000",
       "acquireTriggersWithinLock": "true",

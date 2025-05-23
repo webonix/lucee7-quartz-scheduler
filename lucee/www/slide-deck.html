@@ -36,6 +36,8 @@
       slides: [],
       showModal: false,
       currentUrl: '',
+      showReminder: false,
+      reminderTimer: null,
 
       async loadSlides() {
         console.log("presentation component loadSlides");
@@ -56,6 +58,8 @@
             if (current < slides.length - 1) {
               this.slide++;
               this.bullet = 0;
+
+              this.resetReminderTimer();
             }
             break;
 
@@ -74,6 +78,8 @@
             } else if (current < slides.length - 1) {
               this.slide++;
               this.bullet = 0;
+
+              this.resetReminderTimer();
             }
             break;
 
@@ -101,6 +107,7 @@
       },
       init() {
         document.addEventListener('keydown', this.initKeyControls.bind(this));
+        this.startReminderTimer();
       },
 
       tryOpenUrl() {
@@ -124,7 +131,28 @@
       closeModal() {
         this.showModal = false;
         this.currentUrl = '';
-      }
+      },
+
+      // slide reminder to moe on
+      startReminderTimer() {
+        this.clearReminderTimer();
+        this.reminderTimer = setTimeout(() => {
+          this.showReminder = true;
+        }, 3 * 60 * 1000); // 3 minutes
+      },
+
+      clearReminderTimer() {
+        if (this.reminderTimer) {
+          clearTimeout(this.reminderTimer);
+          this.reminderTimer = null;
+        }
+        this.showReminder = false;
+      },
+
+      resetReminderTimer() {
+        this.clearReminderTimer();
+        this.startReminderTimer();
+      },
 
     }));
  
@@ -226,6 +254,15 @@
 
   <div x-show="showModal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50" @click.away="closeModal">
     <iframe :src="currentUrl" class="w-11/12 h-5/6 bg-white rounded shadow-lg" frameborder="0"></iframe>
+  </div>
+
+  <!-- Reminder message -->
+  <div
+    x-show="showReminder"
+    x-transition
+    class="fixed bottom-4 right-4 bg-yellow-200 text-black text-sm p-2 rounded shadow-lg"
+  >
+    ⏳ Time to move on!
   </div>
   
 </body>

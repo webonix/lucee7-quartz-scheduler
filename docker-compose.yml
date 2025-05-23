@@ -3,7 +3,7 @@ services:
     build: 
       context: ./lucee
       args:
-        LUCEE_VERSION: "7.0.0.240-SNAPSHOT" # Pass the version explicitly 
+        LUCEE_VERSION: "7.0.0.242-RC" # Pass the version explicitly 
         LUCEE_ADMIN_PASSWORD: "password"
     container_name: lucee-web
     depends_on:
@@ -29,10 +29,10 @@ services:
     build: 
       context: ./lucee
       args:
-        LUCEE_VERSION: "7.0.0.240-SNAPSHOT" # Pass the version explicitly
+        LUCEE_VERSION: "7.0.0.242-RC" # Pass the version explicitly
         LUCEE_ADMIN_PASSWORD: "password"
     deploy:
-      replicas: 0  # ./docker.sh scale 5 | docker-compose up -d --scale lucee-worker=5
+      replicas: 1  # ./docker.sh scale 5 | docker-compose up -d --scale lucee-worker=5
     depends_on:
       redis:
         condition: service_healthy

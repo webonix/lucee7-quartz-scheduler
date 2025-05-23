@@ -1,10 +1,9 @@
 ARG LUCEE_VERSION
 ARG LUCEE_ADMIN_PASSWORD
 
-# Use the lightweight Lucee 6.2 image
+# https://hub.docker.com/r/lucee/lucee/tags
 FROM lucee/lucee:${LUCEE_VERSION}
-# FROM lucee/lucee:6.2.1.4-SNAPSHOT
-# FROM lucee/lucee:6.2-light
+
 
 # Set environment variables (optional)
 ENV LUCEE_ADMIN_PASSWORD=${LUCEE_ADMIN_PASSWORD}
@@ -22,7 +21,7 @@ COPY ./config/lucee-config-quartz-redis-mysql.json /opt/lucee/server/lucee-serve
 
 ### Extenstion ###
 
-  COPY ./extensions/quartz-extension-1.0.0.34-BETA.lex /opt/lucee/server/lucee-server/deploy/
+  COPY ./extensions/quartz-extension-1.0.0.42-RC.lex /opt/lucee/server/lucee-server/deploy/
   #ADD https://ext.lucee.org/quartz-extension-1.0.0.34-BETA.lex /opt/lucee/server/lucee-server/deploy/
 
   #ADD https://ext.lucee.org/lucee.admin.extension-1.0.0.5.lex /opt/lucee/server/lucee-server/deploy/

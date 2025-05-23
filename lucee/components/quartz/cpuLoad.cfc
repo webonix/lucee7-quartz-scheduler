@@ -46,7 +46,7 @@ component {
 
         // check CPU Load
         cpuLoad = getCPULoad();
-        systemoutput("quartz/cpuLoad(#variables.duration#, #variables.load#) cpuLoad=#cpuLoad#%",1,0);
+        systemoutput("#dateTimeFormat(Now(), 'dd-Mmm-YYYY HH:nn:ss.lll')# quartz/cpuLoad(#variables.duration#, #variables.load#) cpuLoad=#cpuLoad#%",1,0);
         if (cpuLoad> 70) {
 
             throw("AJM CPU Load #cpuLoad# is over 70%");

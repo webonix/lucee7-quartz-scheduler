@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>JSON Toggle Viewer</title>
+  <style>
+    body {
+      font-family: monospace;
+
+      padding: 2rem;
+    }
+    .json-key {
+      color: #a52a2a;
+    }
+    .toggle {
+      cursor: pointer;
+      color: #0066cc;
+    }
+    .json-container {
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+
+<div class="json-container">
+{
+  <div>
+    <span class="json-key">"jobs"</span>: 
+    <span class="toggle" data-collapsed="[...]" data-expanded='[
+        {
+            "label": "Job description",
+            "url": "/path/to/execute.cfm",  // OR
+            "component": "path.to.component",
+            "interval": "60",  // Simple interval in seconds, OR
+            "cron": "0 0/5 * * * ?",  // Cron expression
+            "pause": false,
+            "startAt": "April 1, 2025 08:00:00",  // Optional start date
+            "endAt": "December 31, 2025 17:00:00",  // Optional end date
+            "mode": "singleton",  // For component jobs: "singleton" or "transient"
+            // Additional custom parameters for component initialization
+            "customParam1": "value1",
+            "customParam2": 123
+        },
+
+
+        // URL Jobs: Execute HTTP requests to internal or external URLs
+        {
+            "label": "Call external API",
+            "url": "https://api.example.com/endpoint",
+            "interval": "3600"
+        },
+
+        // Internal Path Jobs: Execute a path local to the server (important for proper load balancing in clusters)
+        {
+            "label": "Process local data",
+            "url": "/jobs/process-data.cfm",
+            "cron": "0 0 * * * ?"
+        },
+
+        // Component Jobs: Execute a CFML component
+        {
+            "label": "Database maintenance",
+            "component": "com.example.tasks.DatabaseMaintenance",
+            "cron": "0 0 3 * * ?",
+            "mode": "singleton",
+            "dbName": "users"
+        }
+    ]'>[...]</span>,
+  </div>
+  <div>
+    <span class="json-key">"listeners"</span>: 
+    <span class="toggle" data-collapsed="[...]" data-expanded='[
+      {
+        "component": "path.to.ListenerComponent",
+        "stream": "err"  // "err" or "out" for console output,
+        "logFile": "/path/to/quartz-cluster.log"
+      }
+    ]'>[...]</span>,
+  </div>
+  <div>
+    <span class="json-key">"store"</span>: 
+    <span class="toggle" data-collapsed="{...}" data-expanded='{
+        // mySQL:
+        "type": "datasource",
+        "datasource": "quartz",
+        "tablePrefix": "QRTZ_",
+        "cluster": true,
+        "clusterCheckinInterval": "15000",
+        "misfireThreshold": "60000"
+
+        // REDIS:
+        "type": "redis",
+        "host": "localhost",
+        "port": 6379,
+        "keyPrefix": "QRTZ_",
+        "password": "${REDIS_PASSWORD}",
+        "redisCluster": false,
+        "redisSentinel": false,
+        "masterGroupName": "",
+        "database": 0,
+        "lockTimeout": 30000,
+        "ssl": false,
+        "misfireThreshold": 60000
+    }'>{...}</span>
+  </div>
+}
+</div>
+
+<script>
+  document.querySelectorAll('.toggle').forEach(el => {
+    el.addEventListener('click', () => {
+      const isCollapsed = el.textContent.trim() === el.dataset.collapsed;
+      el.textContent = isCollapsed ? el.dataset.expanded : el.dataset.collapsed;
+    });
+  });
+</script>
+
+</body>
+</html>

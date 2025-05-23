@@ -7,12 +7,16 @@
     {
       "title": "About Me",
       "bullets": [
-        "Andrew Mercer",
-        "From Perth, Australia",
-        "Long time CFML developer using Lucee and Adobe",
-        "User Group Manager for CFGUWA",
-        "Working in Mining, Finance, Real Estate and Retail sectors as employee and contractor",
-        "Currently Sr. Software Engineer at DistroKid"
+        {"text": "Andrew Mercer"},
+        {"text": "From Perth, Australia"},
+        {"text": "Long time CFML developer using Lucee and Adobe"},
+        {"text": "Conferences:"},
+          {"text": "webDU", "indent": 40},
+          {"text": "cf.Objective(ANZ)", "indent": 40},
+          {"text": "cfCamp", "indent": 40},
+        {"text": "User Group Manager for CFGUWA"},
+        {"text": "Working in Mining, Finance, Real Estate and Retail sectors as employee and contractor"},
+        {"text": "Currently Sr. Software Engineer at DistroKid"}
       ]
     },
     {
@@ -21,7 +25,8 @@
         "A powerful, open-source job scheduling library for Java",
         "Most widely adopted scheduling system in the Java world.",
         "Lets you schedule jobs to run at specific times or intervals",
-        "Now available in Lucee as an extension!"
+        "Supports clustering",
+        "Now available in Lucee as an Extension!"
       ]
     },
     {
@@ -37,12 +42,12 @@
 
         {"text":"Multiple Job Types: "},
           {"text":"Schedule URL calls:", "indent": 40},
-            {"text":"full URL eg http://127.0.0.2:8888/cron/do-stuff.cfm", "indent": 80},
-            {"text":"server path eg /cron/do-stuff.cfm", "indent": 80},
+            {"text":"full URL eg http://127.0.0.2:8888/cron/do-stuff.cfm - <em>run job on specified server</em>" , "indent": 80},
+            {"text":"server path eg /cron/do-stuff.cfm - <em>run on the server Quartz allocated the job to</em>", "indent": 80},
               {"text":"use this method for clustering to ensure proper load balancing in clusters", "indent": 120},
               {"text":"Lucee uses internalRequest() ", "indent": 120, "url": "/slides/qr-codes/lucee-docs-internalrequest.html"},
           {"text":"Component Executions eg task.do.stuff ( task/do/stuff.cfc )", "indent": 40},
-            {"text":"Component Integration: <em>Execute CFML components as scheduled tasks with dependency injection</em>", "indent": 80},
+            {"text":"Component Integration: Execute CFML components as scheduled tasks with dependency injection", "indent": 80},
         
         {"text":"Event Listeners: <em>Attach (multiple) listener components to monitor job execution</em>"},
         {"text":"JSON Configuration: <em>Define your tasks using flexible JSON configuration</em>"}
@@ -57,7 +62,7 @@
           {"text": "0 0 12 1/1 * ? * → Every day at 12pm", "indent": 40},
 
         {"text": "Online tool eg calctools.online", "url": "https://calctools.online/en/time/cron#quartz"},
-        {"text": "Online AI Tools eg yeschat.ai", "url":"https://www.yeschat.ai/gpts-2OToc99OHi-CronGPT"}
+        {"text": "Online AI Tools eg Chat GPT", "url":"https://chatgpt.com/"}
       ]
     },
 
@@ -66,6 +71,11 @@
       "bullets": [
         {"text": "Installation in Lucee Admin", "url": "/slides/lucee/lucee-admin-extensions.html"},
         {"text": "Installation with Docker", "url": "/slides/lucee/docker-extensions.html"},
+        {"text": "Side Note:"},
+        {"text": "&lt;cfschedule&gt; is now in it's own extention", "indent": 40},
+        {"text": "installed by defalt", "indent": 80},
+        {"text": "Lucee 7.1 use Quartz by default?", "indent": 80},
+        {"text": "You do not need to install it if you are going to use Quartz Scheduler", "indent": 40},
         {"text": "Fun Facts for Java-heads"},
         {"text": "Maven Projects in Lucee", "url": "/slides/lucee/maven-projects.html", "indent": 40},
         {"text": "Implement Java Interface", "url": "/slides/lucee/java-interface.html", "indent": 40}
@@ -93,7 +103,8 @@
         {"text": "Using the Deployment Mechanism", "url": "/slides/config/deployment-mechanism.html", "indent": 40},
         {"text": "Quartz must be running", "indent": 80},
         {"text": "Configuration Structure", "url": "/slides/config/configuration-structure.html"},
-        {"text": "Event Gateway", "url": "/slides/admin/event-gateway.html"}
+        {"text": "Event Gateway", "url": "/slides/admin/event-gateway.html"},
+        {"text": "Lucee Config",  "url":"/slides/admin/event-gateway-config.html", "indent": 40}
 
       ]
     },
@@ -118,8 +129,8 @@
         {"text": "public String function getName();", "indent": 40},
         {"text": "public String function getDescription(); // optional", "indent": 40},
         {"text": "public void   function jobToBeExecuted( context );", "indent": 40},
-        {"text": "public void   function jobExecutionVetoed( context );", "indent": 40},
         {"text": "public void   function jobWasExecuted( context, jobException );", "indent": 40},
+        {"text": "public void   function jobExecutionVetoed( context );", "indent": 40},
         {"text": "Listener Example", "url": "/slides/listener/example.html"} 
       ]
     },
@@ -168,7 +179,8 @@
         {"text": "clusterCheckinInterval: <em>How often (in milliseconds) a node checks in with the cluster</em>", "indent": 40},
         {"text": "misfireThreshold: <em>How long (in milliseconds) a trigger can be late before it's considered misfired</em>", "indent": 40},
         {"text": "acquireTriggersWithinLock: <em>Important for clustered environments to prevent race conditions</em>", "indent": 40},
-        {"text": "Example Configuration for Store", "url": "/slides/config/advanced-store.html"}
+        {"text": "Example Configuration for Store", "url": "/slides/config/advanced-store.html"},
+        {"text": "<em>Cluster Demo</em>"}
       ]
     },
 
@@ -178,8 +190,22 @@
         {"text": "Standalong Client"},
         {"text": "Delete a Job with config.quartz sent to deploy directory"},
         {"text": "Set an identifier for a Job [ id | name ]"},
-        {"text": "&lt;cfschedule&gt; Migration Assistant"},
+        {"text": "Migration Assistant - .CFConfig.json", "url": "/slides/lucee/scheduledTasks.html"},
+        {"text": "&lt;cfschedule&gt; Tag for backwards compatibility"},
+        {"text": "swap out 'Lucee Scheduler (Classic)' for 'Quartz Scheduler'", "indent": 40},
+        {"text": "instant clustering support", "indent": 40},
         {"text": "Trigger Listener - so jobExecutionVetoed() gets called"}
+      ]
+    },
+
+    {
+      "title": "Resources & Links",
+      "bullets": [
+        {"text": "Lucee Downloads [ https://download.lucee.org ]", "url":"/slides/qr-codes/lucee-downloads.html"},
+        {"text": "Lucee Recipe: [ https://github.com/lucee/lucee-docs/blob/master/docs/recipes/scheduler-quartz.md ]", "url":"/slides/qr-codes/lucee-recipe.html"},
+        {"text": "Repository [ https://github.com/lucee/extension-quartz/tree/master ]", "url": "/slides/qr-codes/qs-github-repo.html"},
+        {"text": "Report Issues [ https://github.com/lucee/extension-quartz/issues ]", "url": "/slides/qr-codes/qs-github-issues.html"},
+        {"text": "Open Collective [ https://opencollective.com/lucee ]", "url": "/slides/qr-codes/open-collective-lucee.html"}
       ]
     },
 
@@ -197,17 +223,12 @@
         {"text": "This extension will continue to evolve", "indent": 40},
         {"text": "Additional features and improvements will be added", "indent": 40},
         {"text": "Including migration support from the legacy Scheduled Task system", "indent": 40},
-        {"text": "And a read-only standalone client that will provide an overview of all running jobs and listeners, making it easy to monitor your scheduled tasks across multiple servers", "indent": 40}
-      ]
-    },
-    {
-      "title": "Resources & Links",
-      "bullets": [
-        {"text": "Lucee Downloads [ https://download.lucee.org/ ]", "url":"/slides/qr-codes/lucee-downloads.html"},
-        {"text": "Lucee Recipe: [ https://github.com/lucee/lucee-docs/blob/master/docs/recipes/scheduler-quartz.md ]", "url":"/slides/qr-codes/lucee-recipe.html"},
-        {"text": "Repository [ https://github.com/lucee/extension-quartz/tree/master ]", "url": "/slides/qr-codes/qs-github-repo.html"},
-        {"text": "Report Issues [ https://github.com/lucee/extension-quartz/issues ]", "url": "/slides/qr-codes/qs-github-repo.html"}
+        {"text": "And a read-only standalone client that will provide an overview of all running jobs and listeners, making it easy to monitor your scheduled tasks across multiple servers", "indent": 40},
+
+        {"text": "Quick Poll:"},
+        {"text": "Which scheduling extension should be installed by default?", "indent": 40, "url": "https://x.com/cf_camp/"}
       ]
     }
+
   ]
 }

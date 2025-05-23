@@ -3,27 +3,27 @@
     <h1 style="font-size: 42px;">Component Example</h1>
     
     <pre style="font-size: 24px;">
-        component {
-        
-            // Constructor - receives all job parameters
-            public void function init(
-                required string label, 
-                         numeric customNumber=0, 
-                         boolean customBoolean=false, 
-                         string customString=""
-            ) {
-                variables.label = arguments.label;
-                variables.customNumber = arguments.customNumber;
-                variables.customBoolean = arguments.customBoolean;
-                variables.customString = arguments.customString;
-            }
-            
-            // Required execute method - called when the job runs
-            public void function execute() {
-                // Your task logic here
-                log.log(text="Executing job: #variables.label#");
-            }
-        }
+component {
+
+    // Constructor - receives all job parameters
+    public void function <strong>init</strong>(
+        required    string label, 
+                    numeric customNumber=0, 
+                    boolean customBoolean=false, 
+                    string customString=""
+    ) {
+        variables.label = arguments.label;
+        variables.customNumber  = arguments.customNumber;
+        variables.customBoolean = arguments.customBoolean;
+        variables.customString  = arguments.customString;
+    }
+    
+    // Required execute method - called when the job runs
+    public void function <strong>execute()</strong> {
+        // Your task logic here
+        log.log(text="Executing job: #variables.label#");
+    }
+}
     </pre>
     
 

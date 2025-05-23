@@ -5,9 +5,9 @@
       "component": "quartz.cpuLoad",
       "interval": 5,
       "pause": false,
-      "duration": 5,
+      "duration": 10,
       "schedule": "interval",
-      "load": 20
+      "load": 80
     },
     {
       "label": "every 13 seconds",

@@ -19,6 +19,9 @@
     <li><a href="slide-deck.html" target="_blank">Slide Deck</a></li>
     <li><a href="" target="_blank"></a></li>
     <li><a href="https://github.com/lucee/lucee-docs/tree/master/docs/recipes" target="_blank">https://github.com/lucee/lucee-docs/tree/master/docs/recipes</a></li>
+
+    <li><a href="https://x.com/cf_camp/" target="_blank">cfCamp on X</a></li>
+    
 </ul>
 
 <cfscript>

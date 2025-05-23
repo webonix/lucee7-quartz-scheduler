@@ -1,0 +1,27 @@
+<div style="padding: 20px;">
+
+    <h1 style="font-size: 42px;">Lucee Config - Event Gateway</h1>
+
+    <p style="font-size: 36px;">
+        /opt/lucee/server/lucee-server/context/.CFConfig.json
+    </p>
+
+    <pre style="font-size: 24px;">
+"gateways": {
+    "quartz-task": {
+    "cfcPath": "<strong>org.lucee.extension.quartz.QuartzGateway</strong>",
+    "listenerCFCPath": "",
+    "startupMode": "automatic",
+    "custom": {
+        "configFile": "{lucee-config}/quartz/config.json",
+        "logName": "scheduler"
+    },
+    "readOnly": "false"
+    }
+}
+    </pre>
+
+</div>
+
+
+  
